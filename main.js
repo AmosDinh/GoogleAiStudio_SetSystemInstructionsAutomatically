@@ -99,7 +99,7 @@ function setLaTeXSystemInstructions() {
       childList: true,
       subtree: true
     });
-  }, 700);
+  }, 1500);
   
   
   
