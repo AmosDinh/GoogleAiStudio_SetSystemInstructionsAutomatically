@@ -1,15 +1,10 @@
-/**
- * JavaScript to set LaTeX instructions for Claude (Version 3 compatible)
- * More direct approach with simpler selectors for better compatibility
- */
+
+
 function setLaTeXSystemInstructions() {
-  console.log("Attempting to set LaTeX instructions...");
+
   
-  // The text to insert
-  const instructionText = "Use latex enclosed in $ for writing mathematical expressions, chemical equations, etc";
-  
-  // Simpler approach to find the system instructions button
-  // Look for any button with "assignment" icon or system instructions text
+
+  const instructionText = "Always use rendered LaTeX for math: $formula$ for inline (using \mathbf{} for vectors), and $$formula$$ for display equations. Critically, ensure no whitespace exists immediately inside delimiters (use $E=mc^2$, not $ E = mc^2 $). When display math ($$...$$) appears within lists, start it on a new line with zero leading indentation. Reserve code blocks () strictly for programming code implementations, never for displaying mathematical formulas. Wenn der Nutzer in deutsch fragt, antworte auf deutsch. Wenn der Nutzer wahrscheinlich nur eine kurze Antwort erwartet, halte deine Gedanken und deine Antwort kurz. Denke in Englisch. Du musst in den Gedanken nicht noch das deutsche Widergeben und dann ins Englische übersetzen, du kannst gleich in englisch denken.";
   const buttons = document.querySelectorAll('button');
   let systemButton = null;
   
@@ -27,15 +22,11 @@ function setLaTeXSystemInstructions() {
       break;
     }
   }
-  
-  // If button found, click it
+
   if (systemButton) {
-    console.log("Clicking system button");
     systemButton.click();
-    
-    // Wait for textarea to appear
     setTimeout(() => {
-      // Find textarea - simpler approach
+
       const textareas = document.querySelectorAll('textarea');
       let instructionsTextarea = null;
       
@@ -54,8 +45,7 @@ function setLaTeXSystemInstructions() {
       }
       
       if (instructionsTextarea) {
-        // Set the value and trigger input event
-        console.log("Setting textarea value");
+    
         instructionsTextarea.value = instructionText;
         instructionsTextarea.dispatchEvent(new Event('input', { bubbles: true }));
         
@@ -69,34 +59,48 @@ function setLaTeXSystemInstructions() {
           console.log("Alternative setting method failed:", e);
         }
         
-        console.log("Instructions set successfully");
+   
+        // Find and click close button
+       
+          const closeBtn = document.querySelector('button[aria-label*="Close system instructions"]') 
+          if (closeBtn) {
+            closeBtn.click();
+        
+          }
+
+       
       } else {
-        console.log("Could not find system instructions textarea");
+    
       }
     }, 0);
   } else {
-    console.log("System instructions button not found");
+ 
   }
 }
-
-// Direct execution - no waiting for chat button click in this version
-
-
+const runSettingsCloseBtn = document.querySelector('button[aria-label="Close run settings panel"]') 
+                           
+if (runSettingsCloseBtn) {
+  runSettingsCloseBtn.click();
+  console.log("Closed run settings panel");
+}
 
 const chatButton = document.querySelector('a.nav-item[href="/app/prompts/new_chat"]');
 
-// Check if the element exists to avoid errors
 if (chatButton) {
-  // Add a click event listener to the found element
+
   chatButton.addEventListener('click', function(event) {
+         
+const runSettingsCloseBtn = document.querySelector('button[aria-label="Close run settings panel"]') 
+                          
+if (runSettingsCloseBtn) {
+  runSettingsCloseBtn.click();
+  console.log("Closed run settings panel");
+}
     setTimeout(()=>{setLaTeXSystemInstructions();},250)
     
   });
 }
-// Start observing with a delay to avoid initial page load operations
+
 setTimeout(() => {
   setLaTeXSystemInstructions();
 }, 1000);
-
-
-
