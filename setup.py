@@ -1,15 +1,14 @@
 """
-Definitive setup.py for a clean virtual environment.
+Definitive setup.py - Final Version
 
-This script is simplified because the clean environment (venv) avoids
-most dependency issues like the libffi.dylib problem. It uses the most
-robust method for finding the browser cache.
+This version includes fixes for all known dynamic library issues with Miniconda
+and also fixes the hidden 'html.parser' dependency from the markdown library.
 """
 import os
 import sys
 from setuptools import setup
 
-# --- Part 1: Playwright driver files (still needed) ---
+# --- Part 1: Playwright driver files (these are small and safe to bundle) ---
 try:
     import playwright
     playwright_path = os.path.dirname(playwright.__file__)
@@ -18,15 +17,7 @@ except ImportError:
     print("Error: Playwright not found in the venv. Did you run 'pip install playwright'?")
     sys.exit(1)
 
-# --- Part 2: Playwright browser files (still needed) ---
-# Using the direct path method is the most reliable.
-browser_install_dir = os.path.expanduser('~/Library/Caches/ms-playwright')
-if not os.path.isdir(browser_install_dir):
-    print(f"FATAL ERROR: Browser directory not found at {browser_install_dir}")
-    print("Please run 'playwright install chromium' while the venv is active.")
-    sys.exit(1)
-
-# --- Part 3: Assemble all data files ---
+# --- Part 2: Assemble data files (DRIVERS ONLY) ---
 all_data_files = []
 
 # Add Playwright drivers
@@ -35,23 +26,26 @@ for root, dirs, files in os.walk(driver_path):
     dest_dir = os.path.join('playwright', os.path.relpath(root, playwright_path))
     all_data_files.append((dest_dir, source_files))
 
-# Add Playwright browsers
-for root, dirs, files in os.walk(browser_install_dir):
-    source_files = [os.path.join(root, f) for f in files]
-    dest_dir = os.path.join('ms-playwright', os.path.relpath(root, browser_install_dir))
-    all_data_files.append((dest_dir, source_files))
-
 APP_NAME = "Math Converter"
 APP_SCRIPT = 'converter.py'
 ICON_FILE = 'icon.icns'
 
-# --- py2app Options (Simplified excludes) ---
+# --- Add paths to ALL required Miniconda libraries ---
+MINICONDA_LIB_PATH = '/Users/amos/miniconda3/lib'
+LIBFFI_PATH = os.path.join(MINICONDA_LIB_PATH, 'libffi.8.dylib')
+LIBTK_PATH = os.path.join(MINICONDA_LIB_PATH, 'libtk8.6.dylib')
+LIBTCL_PATH = os.path.join(MINICONDA_LIB_PATH, 'libtcl8.6.dylib')
+
+
+# --- py2app Options ---
 OPTIONS = {
     'argv_emulation': True,
     'iconfile': ICON_FILE,
-    'packages': ['tkinter', 'PIL', 'markdown', 'playwright'],
-    # We can remove many excludes because they aren't in the clean venv
+    # --- THE FIX: Add 'html' to the packages list ---
+    'packages': ['tkinter', 'PIL', 'markdown', 'playwright', 'html'],
     'excludes': ['playwright._impl.__pyinstaller'],
+    # This option copies all specified libraries into the app's Frameworks folder.
+    'frameworks': [LIBFFI_PATH, LIBTK_PATH, LIBTCL_PATH],
     'plist': {
         'CFBundleName': APP_NAME, 'CFBundleDisplayName': APP_NAME,
         'CFBundleGetInfoString': "Convert Math Markdown to PNG",
