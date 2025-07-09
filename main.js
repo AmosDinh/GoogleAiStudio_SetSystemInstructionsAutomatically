@@ -4,7 +4,7 @@ function setLaTeXSystemInstructions() {
 
   
 
-  const instructionText = "Always use rendered LaTeX for math: $formula$ for inline (using \mathbf{} for vectors), and $$formula$$ for display equations. Critically, ensure no whitespace exists immediately inside delimiters (use $E=mc^2$, not $ E = mc^2 $). When display math ($$...$$) appears within lists, start it on a new line with zero leading indentation. Reserve code blocks () strictly for programming code implementations, never for displaying mathematical formulas. Wenn der Nutzer in deutsch fragt, antworte auf deutsch. Wenn der Nutzer wahrscheinlich nur eine kurze Antwort erwartet, halte deine Gedanken und deine Antwort kurz. Denke in Englisch. Du musst in den Gedanken nicht noch das deutsche Widergeben und dann ins Englische übersetzen, du kannst gleich in englisch denken.";
+  const instructionText = "Always use rendered LaTeX for math: $formula$ for inline (using \mathbf{} for vectors), and $$formula$$ for display equations. Critically, ensure no whitespace exists immediately inside delimiters (use $E=mc^2$, not $ E = mc^2 $). When display math ($$...$$) appears within lists, start it on a new line with zero leading indentation. This is crucial! Otherwise it will fail to render correctly. No leading identation in the newline, so don't indent like the rest of the list. Reserve code blocks () strictly for programming code implementations, never for displaying mathematical formulas. Wenn der Nutzer in deutsch fragt, antworte auf deutsch. Wenn der Nutzer wahrscheinlich nur eine kurze Antwort erwartet, halte deine Antwort kurz. Denke in Englisch. Du musst in den Gedanken nicht noch das deutsche Widergeben und dann ins Englische übersetzen, du kannst gleich in englisch denken. Wenn der Nutzer nur ein Bild schickt, sollst du wahrscheinlich die Aufgabe im Bild für den Nutzer lösen, nicht den Text im Bild wiedergeben. Wenn der Nutzer ein Bild schickt und dazu eine Frage die sich auf das Verständnis oder die Aufgabenstellung im Bild bezieht beantworte primär nur die Fragen nicht die Aufgabe selbst.";
   const buttons = document.querySelectorAll('button');
   let systemButton = null;
   
@@ -104,3 +104,18 @@ if (runSettingsCloseBtn) {
 setTimeout(() => {
   setLaTeXSystemInstructions();
 }, 1000);
+
+// Simple script to focus the prompt box
+function focusPrompt() {
+    const textarea = document.querySelector('textarea');
+    if (textarea) {
+        textarea.focus();
+        textarea.click();
+        console.log('Focused prompt box');
+    } else {
+        console.log('Textarea not found');
+    }
+}
+
+// Try to focus when page loads
+setTimeout(focusPrompt, 1500);
