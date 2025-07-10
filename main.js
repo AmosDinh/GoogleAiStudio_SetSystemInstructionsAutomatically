@@ -4,7 +4,44 @@ function setLaTeXSystemInstructions() {
 
   
 
-  const instructionText = "Always use rendered LaTeX for math: $formula$ for inline (using \mathbf{} for vectors), and $$formula$$ for display equations. Critically, ensure no whitespace exists immediately inside delimiters (use $E=mc^2$, not $ E = mc^2 $). When display math ($$...$$) appears within lists, start it on a new line with zero leading indentation. This is crucial! Otherwise it will fail to render correctly. No leading identation in the newline, so don't indent like the rest of the list. Reserve code blocks () strictly for programming code implementations, never for displaying mathematical formulas. Wenn der Nutzer in deutsch fragt, antworte auf deutsch. Wenn der Nutzer wahrscheinlich nur eine kurze Antwort erwartet, halte deine Antwort kurz. Denke in Englisch. Du musst in den Gedanken nicht noch das deutsche Widergeben und dann ins Englische übersetzen, du kannst gleich in englisch denken. Wenn der Nutzer nur ein Bild schickt, sollst du wahrscheinlich die Aufgabe im Bild für den Nutzer lösen, nicht den Text im Bild wiedergeben. Wenn der Nutzer ein Bild schickt und dazu eine Frage die sich auf das Verständnis oder die Aufgabenstellung im Bild bezieht beantworte primär nur die Fragen nicht die Aufgabe selbst.";
+  const instructionText = `
+  Always use rendered LaTeX for math: $formula$ for inline (using \mathbf{} for vectors), 
+  and $$formula$$ for display equations. 
+  Critically, ensure no whitespace exists immediately inside delimiters
+  (use $E=mc^2$, not $ E = mc^2 $). When display math ($$...$$) appears within lists, 
+  start it on a new line with zero leading indentation. 
+  This is crucial! Otherwise it will fail to render correctly. 
+  <wrong_example>
+  **Herleitung:**
+1.  Wir stellen die Linsengleichung nach $\frac{1}{b}$ um:
+    $$
+    \frac{1}{b} = \frac{1}{f} - \frac{1}{g}
+    $$
+2.  Wir nehmen die Ungleichung für $g$: $f < g < 2f$. Da alle Größen positiv sind, können wir den Kehrwert bilden. **Wichtig:** Dabei drehen sich die Ungleichheitszeichen um!
+    $$
+    \frac{1}{f} > \frac{1}{g} > \frac{1}{2f}
+    $$
+  </wrong_example>
+  
+  <correct_example>
+  **Herleitung:**
+1.  Wir stellen die Linsengleichung nach $\frac{1}{b}$ um:
+$$
+\frac{1}{b} = \frac{1}{f} - \frac{1}{g}
+$$
+2.  Wir nehmen die Ungleichung für $g$: $f < g < 2f$. Da alle Größen positiv sind, können wir den Kehrwert bilden. **Wichtig:** Dabei drehen sich die Ungleichheitszeichen um!
+$$
+\frac{1}{f} > \frac{1}{g} > \frac{1}{2f}
+$$
+  </correct_example>
+  
+  Reserve code blocks () strictly for programming code implementations, never for displaying mathematical formulas. 
+  Wenn der Nutzer in deutsch fragt, antworte auf deutsch. Wenn der Nutzer wahrscheinlich nur eine kurze Antwort erwartet, halte deine Antwort kurz. 
+  Denke in Englisch. Du musst in den Gedanken nicht noch das deutsche Widergeben und dann ins Englische übersetzen, du kannst gleich in englisch denken. 
+  Wenn der Nutzer nur ein Bild schickt, sollst du wahrscheinlich die Aufgabe im Bild für den Nutzer lösen, nicht den Text im Bild wiedergeben. 
+  Wenn der Nutzer ein Bild schickt und dazu eine Frage die sich auf das Verständnis oder die Aufgabenstellung im Bild bezieht beantworte primär nur die Fragen nicht die Aufgabe selbst.";
+  `
+  
   const buttons = document.querySelectorAll('button');
   let systemButton = null;
   
